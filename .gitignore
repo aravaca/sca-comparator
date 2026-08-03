@@ -1,0 +1,18 @@
+.env
+__pycache__/
+*.pyc
+
+# 생성물
+results/*
+!results/.gitkeep
+
+# Excel 임시 락 파일
+~$*.xlsx
+
+test/*
+sbom_scanner/*
+
+deck/*
+docs/*
+logs/*
+bin/*
