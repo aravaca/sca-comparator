@@ -2,7 +2,7 @@ import os
 import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
-from dotenv import load_dotenv
+import config.env  # noqa: F401  (.env 로드 + PROJECT_KEY 자동생성)
 from clients.sparrow_client import get_access_token, fetch_sparrow_components, PROJ_KEY
 from clients.sparrow_scan import run_sparrow_scan
 from clients.blackduck_client import get_blackduck_components
@@ -13,8 +13,6 @@ from core.matching import find_review_candidates_multi
 from output.report import print_report_multi, save_json_multi
 from output.matrix_excel import export_matrix_excel
 from output.dashboard_html import export_dashboard_html
-
-load_dotenv()
 
 # RESULTS_DIR = os.path.join(os.path.dirname(__file__), "results")
 RESULTS_DIR = r"C:\Exception\results"

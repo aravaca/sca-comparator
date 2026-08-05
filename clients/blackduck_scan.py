@@ -8,9 +8,7 @@ import os
 import subprocess
 import sys
 from datetime import datetime
-from dotenv import load_dotenv
-
-load_dotenv()
+import config.env  # noqa: F401  (.env 로드 + PROJECT_KEY 자동생성)
 
 BLACKDUCK_URL = os.getenv("BLACKDUCK_URL")
 API_TOKEN = os.getenv("BLACKDUCK_API_TOKEN")

@@ -3,12 +3,10 @@ import requests
 import urllib3
 import os
 import sys
-from dotenv import load_dotenv
+import config.env  # noqa: F401  (.env 로드 + PROJECT_KEY 자동생성)
 
 # 사내망 자체 인증서 사용 시 발생하는 SSL 경고 무시
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
-load_dotenv()
 
 BLACKDUCK_URL = os.getenv("BLACKDUCK_URL")
 API_TOKEN = os.getenv("BLACKDUCK_API_TOKEN")

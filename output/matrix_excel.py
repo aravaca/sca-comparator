@@ -16,8 +16,7 @@ from datetime import datetime
 from core.compare import DISPLAY_NAMES
 
 import os
-from dotenv import load_dotenv
-load_dotenv()
+import config.env  # noqa: F401  (.env 로드 + PROJECT_KEY 자동생성)
 
 HEADER_FILL = PatternFill(start_color="4F81BD", end_color="4F81BD", fill_type="solid")
 HEADER_FONT = Font(color="FFFFFF", bold=True)

@@ -76,7 +76,12 @@ C:\Exception\results\2026-08-03\
 | 키 | 설명 |
 | --- | --- |
 | `SCAN_PATH` | 세 도구가 **공통으로** 스캔할 소스 경로 |
-| `PROJECT_KEY` | 생성될 프로젝트의 임시 키/이름 (없으면 자동 생성됨) |
+| `PROJECT_KEY` | 생성될 프로젝트의 키/이름. **비워두면** `<오늘날짜>_<SCAN_PATH 마지막 폴더명>` 으로 자동 생성 (예: `20260804_airllm-main`) |
+| `BLACKDUCK_PROJECT_KEY` | 블랙덕 프로젝트 이름. 비우면 `PROJECT_KEY` 와 동일 |
+
+> `.env` 는 셸 스크립트가 아니라 python-dotenv 가 읽는다. `${VAR}` 치환은 되지만
+> `${SCAN_PATH##*\}` 같은 bash 문법은 **에러 없이 빈 문자열이 되므로** 쓰면 안 된다.
+> 경로에서 폴더명을 뽑는 일은 [config/env.py](config/env.py) 가 한다.
 
 ## 주의사항
 

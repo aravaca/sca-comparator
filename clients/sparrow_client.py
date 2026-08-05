@@ -2,11 +2,9 @@ import requests
 import urllib3
 import os
 from concurrent.futures import ThreadPoolExecutor
-from dotenv import load_dotenv
+import config.env  # noqa: F401  (.env 로드 + PROJECT_KEY 자동생성)
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
-load_dotenv()
 
 username = os.getenv("USERNAME1")
 pwd = os.getenv("PASSWORD1")

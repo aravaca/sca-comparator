@@ -24,9 +24,7 @@ import sys
 import tempfile
 import threading
 import time
-from dotenv import load_dotenv
-
-load_dotenv()
+import config.env  # noqa: F401  (.env 로드 + PROJECT_KEY 자동생성)
 
 CLI_PATH = os.getenv(
     "SPARROW_CLI_PATH", r"C:\sparrow\2605.2\client\sparrow-cli.cmd"
