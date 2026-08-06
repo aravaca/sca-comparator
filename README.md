@@ -55,12 +55,16 @@ comparator/
 
 ## 실행
 
+1. .env 파일 작성
+
+2. 
+
 ```bash
 pip install -r requirements.txt
 python main.py
 ```
 
-결과는 `.env` 의 결과 경로에 날짜별로 쌓인다.
+결과는 `.env` 의 `SAVE_PATH`에 날짜폴더/분석시간HHMMSS별로 쌓인다.
 
 ```
 C:\Exception\results\2026-08-03\
@@ -77,24 +81,27 @@ C:\Exception\results\2026-08-03\
 | --- | --- |
 | `SCAN_PATH` | 세 도구가 **공통으로** 스캔할 소스 경로 |
 | `PROJECT_KEY` | 생성될 프로젝트의 키/이름. **비워두면** `<오늘날짜>_<SCAN_PATH 마지막 폴더명>` 으로 자동 생성 (예: `20260804_airllm-main`) |
-| `BLACKDUCK_PROJECT_KEY` | 블랙덕 프로젝트 이름. 비우면 `PROJECT_KEY` 와 동일 |
 
-> `.env` 는 셸 스크립트가 아니라 python-dotenv 가 읽는다. `${VAR}` 치환은 되지만
-> `${SCAN_PATH##*\}` 같은 bash 문법은 **에러 없이 빈 문자열이 되므로** 쓰면 안 된다.
-> 경로에서 폴더명을 뽑는 일은 [config/env.py](config/env.py) 가 한다.
 
-## 주의사항
+## 주의사항 / 인수인계 사항
 
-**중첩 폴더** — `분석대상/jenkins-master/jenkins-master/` 처럼 한 겹 더 들어가 있으면
-매니페스트를 못 찾아 0건이 나온다. `SCAN_PATH` 는 **매니페스트가 실제로 있는 폴더**를 가리킬 것.
-(블랙덕은 `BLACKDUCK_SEARCH_DEPTH` 로 하위 탐색 깊이를 조절한다)
+1. **중첩 폴더** — `C:/jenkins-master/jenkins-master-core/다양한 파일들..` 처럼 한 겹 더 들어가 있으면
+매니페스트를 못 찾아 0건이 나온다. `SCAN_PATH` 는 **매니페스트가 실제로 있는 가장 가까운 폴더**를 가리킬 것.
 
-**스패로우 분석 대기** — 분석이 끝나도 서버가 결과를 반영하는 데 시간이 더 걸린다.
+2. **스캔 없이 비교만** — 실시간 스캔 (호출) 없이 이미 스캔된 결과를 호출하여 비교만 하고 싶다면
+`SPARROW_AUTO_SCAN=false`과 `BLACKDUCK_AUTO_SCAN=false` 설정 
+
+3. **스패로우 분석 대기** — 분석이 끝나도 서버가 결과를 반영하는 데 시간이 더 걸린다.
 CLI 의 `--sync project` 는 이 시점을 제대로 알려주지 못하고 무한 대기하므로 쓰지 않는다.
 대신 `--sync analysis` 로 받고 **스크립트가 직접 재조회**한다(`SPARROW_RETRY_*`).
 
-**devDependencies** — Snyk 는 기본적으로 제외한다. `SNYK_DEV_DEPS=true` 여야 다른 두 도구와
+4. **스패로우 대용량 프로젝트** - 분석 시 2~3시간 시간 초과되거나 타임아웃되어 스크립트가 종료되고 액셀 결과파일을 확인하는데
+스패로우만 텅 비어있는 경우가 있음. 웹훅이 따로 있다고 하니병합하는 것도 괜찮은 아이디어이고 웹에서 먼저 분석을 진행한 뒤 
+`SPARROW_AUTO_SCAN=false` 설정 후 graphql 컴포넌트 조회만 날리는 것도 대안책. `SPARROW_SCAN_TIMEOUT=10800`(단위:초) 를 무작정
+늘려보는 것도 괜찮은 선택지.  
+
+5. **devDependencies** — Snyk CLI 분석은 기본적으로 제외한다. `SNYK_DEV_DEPS=true` 여야 다른 두 도구와
 검출 범위가 맞는다(끄면 검출 수가 크게 줄어든다).
 
-**블랙덕 버전 누적** — `BLACKDUCK_VERSION_AUTO=true` 면 실행마다 새 버전이 생겨 기존 BOM 이
+6. **블랙덕 버전 누적** — `BLACKDUCK_VERSION_AUTO=true` 면 실행마다 새 버전이 생겨 기존 BOM 이
 보존되지만, 서버에 버전이 계속 쌓인다. 라이선스 한도가 있으면 주기적으로 정리할 것.
