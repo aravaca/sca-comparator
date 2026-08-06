@@ -73,6 +73,25 @@ C:\Exception\results\2026-08-03\
    multi_150912.html    # 대시보드 (더블클릭 → 브라우저)
 ```
 
+## 테스트 (중요!!!)
+
+비교 로직(`core/`)을 수정할 때 **반드시 테스팅 도구를 먼저 돌려주세요** 엑셀은 로직이 틀려도 정상적으로
+생성되기 때문에, 잘못된 결과를 알아채기 어렵습니다.
+
+```bash
+pip install pytest
+py -m pytest tests/ -q
+```
+
+테스트 케이스는 전부 **실제 비교에서 나왔던 문제**를 고정한 것이며 테스팅 해보고 싶은 케이스로 아무렇게나 바꿔주셔도 됩니다.
+
+| 파일 | 지키는 것 |
+| --- | --- |
+| `test_normalize.py` | 이름/버전 정규화 (`big.js`→`big-js`, npm scope 보존, Go pseudo-version 통일) |
+| `test_matching.py` | 붙어야 할 표기차(`feross/buffer`↔`buffer`) vs **붙으면 안 되는 쌍**(`rehype-minify`↔`rehype-stringify`) |
+| `test_compare.py` | 버전 집합 판정, 커버리지 분류, **자동병합 오병합 방지** |
+
+
 ## 설정 (.env)
 
 자주 바꾸는 값:
@@ -105,3 +124,5 @@ CLI 의 `--sync project` 는 이 시점을 제대로 알려주지 못하고 무�
 
 6. **블랙덕 버전 누적** — `BLACKDUCK_VERSION_AUTO=true` 면 실행마다 새 버전이 생겨 기존 BOM 이
 보존되지만, 서버에 버전이 계속 쌓인다. 라이선스 한도가 있으면 주기적으로 정리할 것.
+
+7. **테스팅 도구** — 본 프로젝트의 코드 정상 작동여부를 테스트 할 수 있는 테스팅 도구를 생성했으니 위에 **테스트** 항목 확인.

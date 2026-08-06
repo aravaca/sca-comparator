@@ -10,7 +10,7 @@ username = os.getenv("USERNAME1")
 pwd = os.getenv("PASSWORD1")
 IP = os.getenv("IP")
 PORT = os.getenv("PORT")
-PROJ_KEY = os.getenv("PROJECT_KEY")
+PROJ_KEY = os.getenv("PROJECT_KEY")  # 스패로우 프로젝트 키. 비워두면 자동 생성됨. (env.py 에서 PROJECT_KEY 로 생성)
 
 # 서버 주소는 스킴까지 설정으로 뺀다.
 #  - 평소 서버(192.168.70.154:10880) 는 https, 판교 분사 서버(172.30.1.28:10610) 는 http.

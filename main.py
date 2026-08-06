@@ -15,7 +15,7 @@ from output.matrix_excel import export_matrix_excel
 from output.dashboard_html import export_dashboard_html
 
 # RESULTS_DIR = os.path.join(os.path.dirname(__file__), "results")
-RESULTS_DIR = r"C:\Exception\results"
+RESULTS_DIR = os.getenv("SAVE_PATH")
 
 # 스캔 직후 스패로우가 0건일 때 재조회 횟수/간격 (결과 반영 지연 대비)
 SPARROW_RETRY_COUNT = int(os.getenv("SPARROW_RETRY_COUNT", "6"))
